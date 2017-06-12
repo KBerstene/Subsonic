@@ -1200,7 +1200,7 @@ public class DownloadService extends Service {
 		}
 
 		// If only one song, just skip within song
-		if(size() == 1 || (currentPlaying != null && !currentPlaying.isSong())) {
+		if(size() == 1) {
 			rewind();
 			return;
 		}
@@ -1226,7 +1226,7 @@ public class DownloadService extends Service {
 	}
 	public synchronized void next(boolean forceCutoff, boolean forceStart) {
 		// If only one song, just skip within song
-		if(size() == 1 || (currentPlaying != null && !currentPlaying.isSong())) {
+		if(size() == 1) {
 			fastForward();
 			return;
 		} else if(playerState == PREPARING || playerState == PREPARED) {
