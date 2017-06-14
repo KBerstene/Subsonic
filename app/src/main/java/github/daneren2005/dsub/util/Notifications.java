@@ -183,10 +183,12 @@ public final class Notifications {
 				}
 			} else {
 				rv.setImageViewResource(R.id.control_previous, playing ? R.drawable.notification_pause : R.drawable.notification_start);
-				if(isLongFile && playing) {
-					rv.setImageViewResource(R.id.control_pause, R.drawable.notification_fastforward);
+				if(isLongFile) {
+					rv.setImageViewResource(R.id.control_previous, R.drawable.notification_rewind);
+                    rv.setImageViewResource(R.id.control_pause, playing ? R.drawable.notification_pause : R.drawable.notification_start);
 				} else {
-					rv.setImageViewResource(R.id.control_pause, R.drawable.notification_forward);
+                    rv.setImageViewResource(R.id.control_previous, playing ? R.drawable.notification_pause : R.drawable.notification_start);
+                    rv.setImageViewResource(R.id.control_pause, R.drawable.notification_forward);
 				}
 				rv.setImageViewResource(R.id.control_next, R.drawable.notification_close);
 			}
@@ -218,10 +220,11 @@ public final class Notifications {
 			}
 		} else {
 			if (persistent) {
-				pause = R.id.control_previous;
-				if(isLongFile && playing) {
-					fastForward = R.id.control_pause;
+				if(isLongFile) {
+					rewind = R.id.control_previous;
+					pause = R.id.control_pause;
 				} else {
+					pause = R.id.control_previous;
 					next = R.id.control_pause;
 				}
 				close = R.id.control_next;
