@@ -38,8 +38,11 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -629,7 +632,35 @@ public class SettingsFragment extends PreferenceCompatFragment implements Shared
 			}
 		});
 
-		Preference serverTestConnectionPreference = new Preference(context);
+		final Preference serverTestConnectionPreference = new Preference(context) {
+			@Override
+			protected View onCreateView(ViewGroup parent) {
+				ListView listView = (ListView)parent;
+
+				listView.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+					@Override
+					public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+						ListView listView = (ListView) parent;
+						ListAdapter listAdapter = listView.getAdapter();
+						Preference pref = (Preference)listAdapter.getItem(position);
+						if (pref != null && pref.getKey().equals(Constants.PREFERENCES_KEY_TEST_CONNECTION + instance)) {
+							String toastMessage;
+							if (Util.getPreferences(context).getBoolean(Constants.PREFERENCES_KEY_ENCRYPTED_PASSWORD + instance, false)) {
+								toastMessage = "Password is encrypted!\n";
+							} else {
+								toastMessage = "Password NOT encrypted!\n";
+							}
+							toastMessage += Util.getPreferences(context).getString(Constants.PREFERENCES_KEY_PASSWORD + instance, "Could not retrieve");
+
+							Util.toast(context, toastMessage);
+							return true;
+						}
+						return false;
+					}
+				});
+				return super.onCreateView(parent);
+			}
+		};
 		serverTestConnectionPreference.setKey(Constants.PREFERENCES_KEY_TEST_CONNECTION + instance);
 		serverTestConnectionPreference.setPersistent(false);
 		serverTestConnectionPreference.setTitle(R.string.settings_test_connection_title);
