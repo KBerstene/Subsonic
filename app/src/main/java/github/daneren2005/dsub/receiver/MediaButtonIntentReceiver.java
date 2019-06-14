@@ -21,6 +21,7 @@ package github.daneren2005.dsub.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -36,7 +37,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         KeyEvent event = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
-		if(DownloadService.getInstance() == null && (event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_STOP ||
+		if(DownloadService.getInstance() == null && Build.VERSION.SDK_INT < 26 && (event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_STOP ||
 			event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || event.getKeyCode() == KeyEvent.KEYCODE_HEADSETHOOK)) {
 			Log.w(TAG, "Ignore keycode event because downloadService is off");
 			return;

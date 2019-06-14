@@ -126,7 +126,7 @@ public class DownloadService extends Service {
 	public static final int METADATA_UPDATED_BOOKMARK = 4;
 	public static final int METADATA_UPDATED_COVER_ART = 8;
 
-	private RemoteControlClientBase mRemoteControl;
+	private static RemoteControlClientBase mRemoteControl;
 
 	private final IBinder binder = new SimpleServiceBinder<>(this);
 	private Looper mediaPlayerLooper;
@@ -271,12 +271,16 @@ public class DownloadService extends Service {
 		audioNoisyReceiver = new AudioNoisyReceiver();
 		registerReceiver(audioNoisyReceiver, audioNoisyIntent);
 
-		if (mRemoteControl == null) {
-			// Use the remote control APIs (if available) to set the playback state
-			mRemoteControl = RemoteControlClientBase.createInstance();
-			ComponentName mediaButtonReceiverComponent = new ComponentName(getPackageName(), MediaButtonIntentReceiver.class.getName());
-			mRemoteControl.register(this, mediaButtonReceiverComponent);
+		if (mRemoteControl != null) {
+			// Destroy the old session if it exists and refresh it with a new session
+			// This prevents issues with old destroyed contexts, but allows the media session
+			// to live on after the DownloadService has been killed and lets media buttons work
+			destroyRemoteControlClient(this);
 		}
+		// Use the remote control APIs (if available) to set the playback state
+		mRemoteControl = RemoteControlClientBase.createInstance();
+		ComponentName mediaButtonReceiverComponent = new ComponentName(getPackageName(), MediaButtonIntentReceiver.class.getName());
+		mRemoteControl.register(this, mediaButtonReceiverComponent);
 
 		PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, this.getClass().getName());
@@ -365,10 +369,6 @@ public class DownloadService extends Service {
 		mediaPlayerLooper.quit();
 		shufflePlayBuffer.shutdown();
 		effectsController.release();
-		if (mRemoteControl != null) {
-			mRemoteControl.unregister(this);
-			mRemoteControl = null;
-		}
 
 		if(bufferTask != null) {
 			bufferTask.cancel();
@@ -2477,8 +2477,13 @@ public class DownloadService extends Service {
 		clearCurrentBookmark(downloadFile.getSong(), true);
 	}
 
-	public RemoteControlClientBase getRemoteControlClient() {
+	public static RemoteControlClientBase getRemoteControlClient() {
 		return mRemoteControl;
+	}
+
+	public static void destroyRemoteControlClient(Context context) {
+		mRemoteControl.unregister(context);
+		mRemoteControl = null;
 	}
 	
 	private boolean isPastCutoff() {
