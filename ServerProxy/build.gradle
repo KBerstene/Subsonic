@@ -1,0 +1,69 @@
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+repositories {
+    jcenter()
+    google()
+}
+
+dependencies {
+	implementation 'com.android.support:support-v4:18.0.+'
+}
+
+android {
+    compileSdkVersion 34
+
+    namespace "github.daneren2005.serverproxy"
+
+    defaultConfig {
+        targetSdkVersion 33
+        minSdkVersion 26
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles 'proguard.cfg'
+            zipAlignEnabled true
+        }
+        fix {
+            minifyEnabled true
+            proguardFiles 'proguard.cfg'
+            zipAlignEnabled true
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+        floss {
+            // FLOSS build (no proprietary libraries)
+            dimension "version"
+        }
+        google {
+            // FLOSS build + Google libraries
+            // Adds ChromeCast support
+            dimension "version"
+        }
+    }
+}
