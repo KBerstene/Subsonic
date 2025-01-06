@@ -86,6 +86,7 @@ import github.daneren2005.dsub.util.ImageLoader;
 import github.daneren2005.dsub.util.SilentBackgroundTask;
 import github.daneren2005.dsub.util.ThemeUtil;
 import github.daneren2005.dsub.util.Util;
+import github.daneren2005.dsub.util.compat.RemoteControlClientBase;
 import github.daneren2005.dsub.view.UpdateView;
 import github.daneren2005.dsub.util.UserUtil;
 
@@ -308,6 +309,9 @@ public class SubsonicActivity extends AppCompatActivity implements OnItemSelecte
 		super.onDestroy();
 		destroyed = true;
 		Util.getPreferences(this).unregisterOnSharedPreferenceChangeListener(preferencesListener);
+
+		if (DownloadService.getRemoteControlClient() != null)
+			DownloadService.destroyRemoteControlClient(this);
 	}
 
 	@Override

@@ -638,6 +638,11 @@ public class RemoteControlClientLP extends RemoteControlClientBase {
 			if (getMediaSession() != null && Intent.ACTION_MEDIA_BUTTON.equals(mediaButtonIntent.getAction())) {
 				KeyEvent keyEvent = mediaButtonIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
 				if (keyEvent != null) {
+					if (DownloadService.getInstance() == null) {
+						// Service likely stopped by Android 8+ aggressive cleanup
+						// Restart the service to allow it to handle events properly
+						DownloadService.startService(downloadService);
+					}
 					downloadService.handleKeyEvent(keyEvent);
 					return true;
 				}
