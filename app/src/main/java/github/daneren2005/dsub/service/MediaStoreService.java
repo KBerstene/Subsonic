@@ -168,9 +168,16 @@ public class MediaStoreService {
 
 	private void insertAlbumArt(int albumId, DownloadFile downloadFile) {
 		ContentResolver contentResolver = context.getContentResolver();
+		Cursor cursor;
 
-		Cursor cursor = contentResolver.query(Uri.withAppendedPath(ALBUM_ART_URI, String.valueOf(albumId)), null, null, null, null);
-		if (!cursor.moveToFirst()) {
+		try {
+			cursor = contentResolver.query(Uri.withAppendedPath(ALBUM_ART_URI, String.valueOf(albumId)), null, null, null, null);
+		} catch (Exception e) {
+			Log.i(TAG, "Problem adding album art");
+			return;
+		}
+
+		if (cursor != null && !cursor.moveToFirst()) {
 
 			// No album art found, add it.
 			File albumArtFile = FileUtil.getAlbumArtFile(context, downloadFile.getSong());
