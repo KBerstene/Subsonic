@@ -99,7 +99,7 @@ public class SubsonicActivity extends AppCompatActivity implements OnItemSelecte
 	protected static boolean actionbarColored;
 	private static final int MENU_GROUP_SERVER = 10;
 	private static final int MENU_ITEM_SERVER_BASE = 100;
-	public static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+	public static final int PERMISSIONS_REQUEST_READ_MEDIA_AUDIO = 1;
 	public static final int PERMISSIONS_REQUEST_LOCATION = 2;
 
 	private final List<Runnable> afterServiceAvailable = new ArrayList<>();
@@ -185,7 +185,7 @@ public class SubsonicActivity extends AppCompatActivity implements OnItemSelecte
 			Util.getPreferences(this).registerOnSharedPreferenceChangeListener(preferencesListener);
 		}
 
-		ActivityResultLauncher<String> requestPermissionLauncher =
+		ActivityResultLauncher<String> requestStoragePermissionLauncher =
 				registerForActivityResult(new RequestPermission(), isGranted -> {
 					if (isGranted) {
 						// Permission is granted. Continue the action or workflow in your
@@ -196,12 +196,30 @@ public class SubsonicActivity extends AppCompatActivity implements OnItemSelecte
 						// same time, respect the user's decision. Don't link to system
 						// settings in an effort to convince the user to change their
 						// decision.
+						Util.toast(this, R.string.permission_external_storage_failed);
+						finish();
 					}
 				});
 
-		if (ContextCompat.checkSelfPermission(this, permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-			requestPermissionLauncher.launch(permission.WRITE_EXTERNAL_STORAGE);
+		if (ContextCompat.checkSelfPermission(this, permission.READ_MEDIA_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+			requestStoragePermissionLauncher.launch(permission.READ_MEDIA_AUDIO);
 		}
+
+		ActivityResultLauncher<String> requestLocationPermissionLauncher =
+				registerForActivityResult(new RequestPermission(), isGranted -> {
+					if (isGranted) {
+						// Permission is granted. Continue the action or workflow in your
+						// app.
+					} else {
+						// Explain to the user that the feature is unavailable because the
+						// feature requires a permission that the user has denied. At the
+						// same time, respect the user's decision. Don't link to system
+						// settings in an effort to convince the user to change their
+						// decision.
+						Util.toast(this, R.string.permission_location_failed);
+						finish();
+					}
+				});
 
 		SharedPreferences prefs = Util.getPreferences(this);
 		int instance = prefs.getInt(Constants.PREFERENCES_KEY_SERVER_INSTANCE, 1);
@@ -210,30 +228,8 @@ public class SubsonicActivity extends AppCompatActivity implements OnItemSelecte
 			String currentSSID = Util.getSSID(this);
 
 			if("<unknown ssid>".equals(currentSSID) && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, SubsonicActivity.PERMISSIONS_REQUEST_LOCATION);
-			}
-		}
-	}
-
-	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-		switch (requestCode) {
-			case PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
-				// If request is cancelled, the result arrays are empty.
-				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-				} else {
-					Util.toast(this, R.string.permission_external_storage_failed);
-					finish();
-				}
-			}
-			case PERMISSIONS_REQUEST_LOCATION: {
-				// If request is cancelled, the result arrays are empty.
-				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-				} else {
-					Util.toast(this, R.string.permission_location_failed);
-				}
+				requestLocationPermissionLauncher.launch(permission.ACCESS_COARSE_LOCATION);
+				requestLocationPermissionLauncher.launch(permission.ACCESS_FINE_LOCATION);
 			}
 		}
 	}
