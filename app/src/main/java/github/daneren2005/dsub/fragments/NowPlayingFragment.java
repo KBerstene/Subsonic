@@ -52,7 +52,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -112,8 +111,8 @@ public class NowPlayingFragment extends SubsonicFragment implements OnGestureLis
 	private SeekBar progressBar;
 	private AutoRepeatButton previousButton;
 	private AutoRepeatButton nextButton;
-	private AutoRepeatButton rewindButton;
-	private AutoRepeatButton fastforwardButton;
+	private ImageButton rewindButton;
+	private ImageButton fastforwardButton;
 	private View pauseButton;
 	private View stopButton;
 	private View startButton;
@@ -182,8 +181,8 @@ public class NowPlayingFragment extends SubsonicFragment implements OnGestureLis
 		progressBar = (SeekBar)rootView.findViewById(R.id.download_progress_bar);
 		previousButton = (AutoRepeatButton)rootView.findViewById(R.id.download_previous);
 		nextButton = (AutoRepeatButton)rootView.findViewById(R.id.download_next);
-		rewindButton = (AutoRepeatButton) rootView.findViewById(R.id.download_rewind);
-		fastforwardButton = (AutoRepeatButton) rootView.findViewById(R.id.download_fastforward);
+		rewindButton = rootView.findViewById(R.id.download_rewind);
+		fastforwardButton = rootView.findViewById(R.id.download_fastforward);
 		pauseButton =rootView.findViewById(R.id.download_pause);
 		stopButton =rootView.findViewById(R.id.download_stop);
 		startButton =rootView.findViewById(R.id.download_start);
@@ -223,6 +222,8 @@ public class NowPlayingFragment extends SubsonicFragment implements OnGestureLis
 		pauseButton.setOnTouchListener(touchListener);
 		stopButton.setOnTouchListener(touchListener);
 		startButton.setOnTouchListener(touchListener);
+		rewindButton.setOnTouchListener(touchListener);
+		fastforwardButton.setOnTouchListener(touchListener);
 		bookmarkButton.setOnTouchListener(touchListener);
 		rateBadButton.setOnTouchListener(touchListener);
 		rateGoodButton.setOnTouchListener(touchListener);
@@ -241,15 +242,7 @@ public class NowPlayingFragment extends SubsonicFragment implements OnGestureLis
 		previousButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				warnIfStorageUnavailable();
-				new SilentBackgroundTask<Void>(context) {
-					@Override
-					protected Void doInBackground() throws Throwable {
-						getDownloadService().previous();
-						return null;
-					}
-				}.execute();
-				setControlsVisible(true);
+				changeSong(true);
 			}
 		});
 		previousButton.setOnRepeatListener(new Runnable() {
@@ -261,15 +254,7 @@ public class NowPlayingFragment extends SubsonicFragment implements OnGestureLis
 		nextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				warnIfStorageUnavailable();
-				new SilentBackgroundTask<Boolean>(context) {
-					@Override
-					protected Boolean doInBackground() throws Throwable {
-						getDownloadService().next();
-						return true;
-					}
-				}.execute();
-				setControlsVisible(true);
+				changeSong(false);
 			}
 		});
 		nextButton.setOnRepeatListener(new Runnable() {
@@ -284,9 +269,11 @@ public class NowPlayingFragment extends SubsonicFragment implements OnGestureLis
 				changeProgress(true);
 			}
 		});
-		rewindButton.setOnRepeatListener(new Runnable() {
-			public void run() {
-				changeProgress(true);
+		rewindButton.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				changeSong(true);
+				return true;
 			}
 		});
 
@@ -296,9 +283,11 @@ public class NowPlayingFragment extends SubsonicFragment implements OnGestureLis
 				changeProgress(false);
 			}
 		});
-		fastforwardButton.setOnRepeatListener(new Runnable() {
-			public void run() {
-				changeProgress(false);
+		fastforwardButton.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				changeSong(false);
+				return true;
 			}
 		});
 
@@ -1019,6 +1008,27 @@ public class NowPlayingFragment extends SubsonicFragment implements OnGestureLis
 				service.play(current);
 			}
 		}
+	}
+
+	private void changeSong(final boolean previous) {
+		final DownloadService downloadService = getDownloadService();
+		if(downloadService == null) {
+			return;
+		}
+
+		warnIfStorageUnavailable();
+		new SilentBackgroundTask<Void>(context) {
+			@Override
+			protected Void doInBackground() throws Throwable {
+				if(previous) {
+					downloadService.previous();
+				} else {
+					downloadService.next();
+				}
+				return null;
+			}
+		}.execute();
+		setControlsVisible(true);
 	}
 
 	private void changeProgress(final boolean rewind) {
