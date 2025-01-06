@@ -329,13 +329,13 @@ public class DSubWidgetProvider extends AppWidgetProvider {
         intent = new Intent("DSub.REWIND");  // Use a unique action name to ensure a different PendingIntent to be created.
         intent.setComponent(new ComponentName(context, DownloadService.class));
         intent.setAction(DownloadService.CMD_REWIND);
-        pendingIntent = PendingIntent.getService(context, 0, intent, 0);
+        pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.control_rewind, pendingIntent);
 
         intent = new Intent("DSub.FASTFORWARD");  // Use a unique action name to ensure a different PendingIntent to be created.
         intent.setComponent(new ComponentName(context, DownloadService.class));
         intent.setAction(DownloadService.CMD_FASTFORWARD);
-        pendingIntent = PendingIntent.getService(context, 0, intent, 0);
+        pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.control_fastforward, pendingIntent);
     }
 }
