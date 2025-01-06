@@ -32,17 +32,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -246,7 +246,7 @@ public class SubsonicActivity extends AppCompatActivity implements OnItemSelecte
 	protected void createCustomActionBarView() {
 		actionBarSpinner = (Spinner) getLayoutInflater().inflate(R.layout.actionbar_spinner, null);
 		if((this instanceof SubsonicFragmentActivity || this instanceof SettingsActivity) && (Util.getPreferences(this).getBoolean(Constants.PREFERENCES_KEY_COLOR_ACTION_BAR, true) || ThemeUtil.getThemeRes(this) != R.style.Theme_DSub_Light_No_Color)) {
-			actionBarSpinner.setBackgroundDrawable(DrawableTint.getTintedDrawableFromColor(this, R.drawable.abc_spinner_mtrl_am_alpha, android.R.color.white));
+			actionBarSpinner.setBackgroundDrawable(DrawableTint.getTintedDrawableFromColor(this, com.shehabic.droppy.R.drawable.abc_spinner_mtrl_am_alpha, android.R.color.white));
 		}
 		spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item);
 		spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

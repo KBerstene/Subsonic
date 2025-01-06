@@ -22,7 +22,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -295,7 +295,7 @@ public abstract class UpdateView<T> extends LinearLayout {
 		View child = getChildAt(0);
 		if (checked && startBackgroundDrawable == null) {
 			startBackgroundDrawable = child.getBackground();
-			child.setBackgroundColor(DrawableTint.getColorRes(context, R.attr.colorPrimary));
+			child.setBackgroundColor(DrawableTint.getColorRes(context, androidx.appcompat.R.attr.colorPrimary));
 		} else if (!checked && startBackgroundDrawable != null) {
 			child.setBackgroundDrawable(startBackgroundDrawable);
 			startBackgroundDrawable = null;

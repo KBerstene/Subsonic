@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<style name="BasicButton">
-		<item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+		<item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
 	</style>
 	<style name="NotificationButtonBase">
 		<item name="android:background">?android:selectableItemBackground</item>

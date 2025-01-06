@@ -20,9 +20,9 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.AttrRes;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 import android.util.TypedValue;
 
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class DrawableTint {
 	private static final WeakHashMap<Integer, Drawable> tintedDrawables = new WeakHashMap<>();
 
 	public static Drawable getTintedDrawable(Context context, @DrawableRes int drawableRes) {
-		return getTintedDrawable(context, drawableRes, R.attr.colorAccent);
+		return getTintedDrawable(context, drawableRes, androidx.appcompat.R.attr.colorAccent);
 	}
 	public static Drawable getTintedDrawable(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttr) {
 		if(tintedDrawables.containsKey(drawableRes)) {

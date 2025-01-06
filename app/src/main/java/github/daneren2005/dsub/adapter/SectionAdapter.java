@@ -19,8 +19,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.view.ActionMode;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -427,7 +427,7 @@ public abstract class SectionAdapter<T> extends RecyclerView.Adapter<UpdateViewH
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Util.getPreferences(context).getBoolean(Constants.PREFERENCES_KEY_COLOR_ACTION_BAR, true)) {
 						TypedValue typedValue = new TypedValue();
 						Resources.Theme theme = context.getTheme();
-						theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+						theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
 						int colorPrimaryDark = typedValue.data;
 
 						Window window = ((SubsonicFragmentActivity) context).getWindow();

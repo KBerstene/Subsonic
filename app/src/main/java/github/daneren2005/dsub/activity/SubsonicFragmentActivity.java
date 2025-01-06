@@ -31,10 +31,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -968,7 +968,7 @@ public class SubsonicFragmentActivity extends SubsonicActivity implements Downlo
 		if (coverArtView != null) {
 			int height = coverArtView.getHeight();
 			if (height <= 0) {
-				int[] attrs = new int[]{R.attr.actionBarSize};
+				int[] attrs = new int[]{androidx.appcompat.R.attr.actionBarSize};
 				TypedArray typedArray = this.obtainStyledAttributes(attrs);
 				height = typedArray.getDimensionPixelSize(0, 0);
 				typedArray.recycle();
@@ -1030,7 +1030,7 @@ public class SubsonicFragmentActivity extends SubsonicActivity implements Downlo
 		if(song != null && coverArtView != null && fieldChange == DownloadService.METADATA_UPDATED_COVER_ART) {
 			int height = coverArtView.getHeight();
 			if (height <= 0) {
-				int[] attrs = new int[]{R.attr.actionBarSize};
+				int[] attrs = new int[]{androidx.appcompat.R.attr.actionBarSize};
 				TypedArray typedArray = this.obtainStyledAttributes(attrs);
 				height = typedArray.getDimensionPixelSize(0, 0);
 				typedArray.recycle();
