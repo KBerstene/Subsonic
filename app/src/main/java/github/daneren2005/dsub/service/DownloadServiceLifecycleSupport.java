@@ -155,13 +155,6 @@ public class DownloadServiceLifecycleSupport {
 		// React to media buttons.
 		Util.registerMediaButtonEventReceiver(downloadService);
 
-		// Pause temporarily on incoming phone calls.
-		phoneStateListener = new MyPhoneStateListener();
-
-		// Android 6.0 removes requirement for android.Manifest.permission.READ_PHONE_STATE;
-		TelephonyManager telephonyManager = (TelephonyManager) downloadService.getSystemService(Context.TELEPHONY_SERVICE);
-		telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
-
 		// Register the handler for outside intents.
 		IntentFilter commandFilter = new IntentFilter();
 		commandFilter.addAction(DownloadService.CMD_PLAY);

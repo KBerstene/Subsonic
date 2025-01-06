@@ -45,7 +45,7 @@
 
 		<activity android:name="github.daneren2005.dsub.activity.SubsonicFragmentActivity"
 				  android:configChanges="orientation|keyboardHidden"
-			      android:exported="false"
+			      android:exported="true"
                   android:launchMode="singleTask">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
@@ -56,11 +56,11 @@
 
         <activity android:name="github.daneren2005.dsub.activity.SettingsActivity"
                   android:configChanges="orientation|keyboardHidden"
-			      android:exported="false"
+			      android:exported="true"
                   android:launchMode="singleTask"/>
 
         <activity android:name="github.daneren2005.dsub.activity.VoiceQueryReceiverActivity"
-			      android:exported="false"
+			      android:exported="true"
                   android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
@@ -75,7 +75,7 @@
         </activity>
 
         <activity android:name="github.daneren2005.dsub.activity.QueryReceiverActivity"
-		          android:exported="false"
+		          android:exported="true"
                   android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
@@ -87,7 +87,7 @@
 			android:name="github.daneren2005.dsub.activity.EditPlayActionActivity"
 			android:label="@string/tasker.start_playing"
 			android:icon="@drawable/launch"
-			android:exported="false">
+			android:exported="true">
 
 			<intent-filter>
 				<action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
@@ -108,7 +108,7 @@
 
 		<service android:name="org.fourthline.cling.android.AndroidUpnpServiceImpl"/>
 		<service android:name="github.daneren2005.dsub.service.sync.AuthenticatorService"
-			android:exported="false">
+			android:exported="true">
 			<intent-filter>
 				<action android:name="android.accounts.AccountAuthenticator"/>
 			</intent-filter>
@@ -161,7 +161,7 @@
 			android:label="DSub Headphone Listener"/>
 		<receiver
 			android:name="github.daneren2005.dsub.receiver.BootReceiver"
-			android:exported="false">
+			android:exported="true">
 			<intent-filter>
 				<action
 					android:name="android.intent.action.BOOT_COMPLETED" />
@@ -169,14 +169,14 @@
 		</receiver>
 
         <receiver android:name="github.daneren2005.dsub.receiver.MediaButtonIntentReceiver"
-			android:exported="false">
+			android:exported="true">
         	<intent-filter>
 				<action android:name="android.intent.action.MEDIA_BUTTON" />
 			</intent-filter>
         </receiver>
 
 		<receiver android:name="github.daneren2005.dsub.receiver.A2dpIntentReceiver"
-			android:exported="false">
+			android:exported="true">
 			<intent-filter>
 				<action android:name="android.music.playstatusrequest"/>
 			</intent-filter>
@@ -185,7 +185,7 @@
         <receiver
 			android:name="github.daneren2005.dsub.provider.DSubWidget4x1"
 			android:label="@string/widget.4x1"
-			android:exported="false">
+			android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -194,7 +194,7 @@
 		<receiver
 			android:name="github.daneren2005.dsub.provider.DSubWidget4x2"
 			android:label="@string/widget.4x2"
-			android:exported="false">
+			android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -203,7 +203,7 @@
 		<receiver
 			android:name="github.daneren2005.dsub.provider.DSubWidget4x3"
 			android:label="@string/widget.4x3"
-			android:exported="false">
+			android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -212,7 +212,7 @@
 		<receiver
 			android:name="github.daneren2005.dsub.provider.DSubWidget4x4"
 			android:label="@string/widget.4x4"
-			android:exported="false">
+			android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -221,7 +221,7 @@
 
 		<receiver
 			android:name="github.daneren2005.dsub.receiver.PlayActionReceiver"
-			android:exported="false">
+			android:exported="true">
 
 			<intent-filter>
 				<action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
@@ -233,22 +233,22 @@
 		<provider android:name="github.daneren2005.dsub.provider.PlaylistStubProvider"
 			android:authorities="@string/provider.playlist"
 			android:label="@string/button_bar.playlists"
-			android:exported="false"
+			android:exported="true"
 			android:syncable="true"/>
 		<provider android:name="github.daneren2005.dsub.provider.PodcastStubProvider"
 			android:authorities="@string/provider.podcast"
 			android:label="@string/button_bar.podcasts"
-			android:exported="false"
+			android:exported="true"
 			android:syncable="true"/>
 		<provider android:name="github.daneren2005.dsub.provider.StarredStubProvider"
 				  android:authorities="@string/provider.starred"
 				  android:label="@string/main.albums_starred"
-				  android:exported="false"
+				  android:exported="true"
 				  android:syncable="true"/>
 		<provider android:name="github.daneren2005.dsub.provider.MostRecentStubProvider"
 				  android:authorities="@string/provider.recently_added"
 				  android:label="@string/main.albums_newest"
-				  android:exported="false"
+				  android:exported="true"
 				  android:syncable="true"/>
 
         <meta-data android:name="android.app.default_searchable"

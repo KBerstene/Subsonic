@@ -33,6 +33,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -182,8 +185,22 @@ public class SubsonicActivity extends AppCompatActivity implements OnItemSelecte
 			Util.getPreferences(this).registerOnSharedPreferenceChangeListener(preferencesListener);
 		}
 
+		ActivityResultLauncher<String> requestPermissionLauncher =
+				registerForActivityResult(new RequestPermission(), isGranted -> {
+					if (isGranted) {
+						// Permission is granted. Continue the action or workflow in your
+						// app.
+					} else {
+						// Explain to the user that the feature is unavailable because the
+						// feature requires a permission that the user has denied. At the
+						// same time, respect the user's decision. Don't link to system
+						// settings in an effort to convince the user to change their
+						// decision.
+					}
+				});
+
 		if (ContextCompat.checkSelfPermission(this, permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-			ActivityCompat.requestPermissions(this, new String[]{ permission.WRITE_EXTERNAL_STORAGE }, PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+			requestPermissionLauncher.launch(permission.WRITE_EXTERNAL_STORAGE);
 		}
 
 		SharedPreferences prefs = Util.getPreferences(this);
