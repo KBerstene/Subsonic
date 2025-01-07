@@ -38,10 +38,7 @@ public class AudioEffectsController {
     public AudioEffectsController(Context context, int audioSessionId) {
         this.context = context;
 		this.audioSessionId = audioSessionId;
-
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			available = true;
-		}
+		this.available = true;
     }
 
 	public boolean isAvailable() {

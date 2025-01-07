@@ -46,7 +46,6 @@ import github.daneren2005.dsub.util.SilentServiceTask;
 import github.daneren2005.dsub.util.Util;
 import github.daneren2005.dsub.util.compat.RemoteControlClientLP;
 
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class AutoMediaBrowserService extends MediaBrowserServiceCompat {
 	private static final String TAG = AutoMediaBrowserService.class.getSimpleName();
 	private static final String BROWSER_ROOT = "root";

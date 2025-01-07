@@ -18,6 +18,7 @@
 */
 package github.daneren2005.dsub.util.compat;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -59,6 +60,7 @@ import github.daneren2005.dsub.util.ImageLoader;
 import github.daneren2005.dsub.util.SilentServiceTask;
 import github.daneren2005.dsub.util.Util;
 
+@SuppressLint("ObsoleteSdkInt")
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class RemoteControlClientLP extends RemoteControlClientBase {
 	private static final String TAG = RemoteControlClientLP.class.getSimpleName();
@@ -119,7 +121,7 @@ public class RemoteControlClientLP extends RemoteControlClientBase {
 	public void setPlaybackState(int state, int index, int queueSize) {
 		PlaybackStateCompat.Builder builder = new PlaybackStateCompat.Builder();
 
-		int newState = PlaybackStateCompat.STATE_NONE;
+		int newState;
 		switch(state) {
 			case RemoteControlClient.PLAYSTATE_PLAYING:
 				newState = PlaybackStateCompat.STATE_PLAYING;
@@ -133,6 +135,8 @@ public class RemoteControlClientLP extends RemoteControlClientBase {
 			case RemoteControlClient.PLAYSTATE_BUFFERING:
 				newState = PlaybackStateCompat.STATE_BUFFERING;
 				break;
+			default:
+				newState = PlaybackStateCompat.STATE_NONE;
 		}
 
 		long position = -1;
@@ -539,7 +543,7 @@ public class RemoteControlClientLP extends RemoteControlClientBase {
 					editor.putString(Constants.PREFERENCES_KEY_SHUFFLE_START_YEAR, null);
 					editor.putString(Constants.PREFERENCES_KEY_SHUFFLE_END_YEAR, null);
 					editor.putString(Constants.PREFERENCES_KEY_SHUFFLE_GENRE, genre);
-					editor.commit();
+					editor.apply();
 
 					downloadService.clear();
 					downloadService.setShufflePlayEnabled(true);
@@ -582,13 +586,19 @@ public class RemoteControlClientLP extends RemoteControlClientBase {
 
 			boolean shuffle = extras.getBoolean(Constants.INTENT_EXTRA_NAME_SHUFFLE, false);
 			boolean playLast = extras.getBoolean(Constants.INTENT_EXTRA_PLAY_LAST, false);
-			Entry entry = (Entry) extras.getSerializable(Constants.INTENT_EXTRA_ENTRY);
+
+			//noinspection ReassignedVariable
+            Entry entry = (Entry) extras.getSerializable(Constants.INTENT_EXTRA_ENTRY);
 			if(extras.containsKey(Constants.INTENT_EXTRA_ENTRY_BYTES)) {
 				try {
 					entry = Entry.fromByteArray(extras.getByteArray(Constants.INTENT_EXTRA_ENTRY_BYTES));
 				} catch(Exception e) {
 					Log.e(TAG, "Failed to deserialize from entry: ", e);
 				}
+			}
+
+			if (entry == null) {
+				return;
 			}
 
 			String playlistId = extras.getString(Constants.INTENT_EXTRA_NAME_PLAYLIST_ID, null);

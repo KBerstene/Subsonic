@@ -7,20 +7,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Bitmap;
 import androidx.mediarouter.media.MediaRouter;
-import android.os.Build;
 
 import java.util.List;
 
 public abstract class RemoteControlClientBase {
 	
 	public static RemoteControlClientBase createInstance() {
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			return new RemoteControlClientLP();
-		} else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-			return new RemoteControlClientJB();
-		} else {
-			return new RemoteControlClientICS();
-		}
+		return new RemoteControlClientLP();
 	}
 	
 	protected RemoteControlClientBase() {
